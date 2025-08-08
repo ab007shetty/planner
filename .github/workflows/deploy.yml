@@ -1,0 +1,39 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Clean install (fix Rollup native error)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+
+      - name: Build Project (disable native Rollup)
+        run: npm run build
+        env:
+          ROLLUP_NO_NATIVE: true
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
