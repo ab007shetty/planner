@@ -67,7 +67,6 @@ It is a simplified calendar that allows you to:
 
 ---
 
-
 ## 🚀 Quick Start
 
 ### 1. Clone the Repository
